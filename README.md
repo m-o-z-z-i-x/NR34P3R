@@ -33,7 +33,7 @@ Scans hosts with predefined or custom port ranges, revealing active services and
 
 ## 🛠️ Using
 
-### Basic Commands:
+### Basic Commands
 ```bash
 start   # Begin scanning
 help    # Show documentation
@@ -41,12 +41,12 @@ clear   # Reset terminal
 exit    # Quit program
 ```
 
-### Scanning Options:
-1. **Target Input**
+### Scanning Options
+1. **Target Input:**
 	- Domain (`example.com`)
 	- IP (`192.168.1.1`)
 
-2. **Port Selection**
+2. **Port Selection:**
 	- `default`: 34 common ports (HTTP, SSH, MySQL etc.)
 	- `1`: Single port mode
 	- `2`: Full 1-65535 range
@@ -58,8 +58,8 @@ exit    # Quit program
 
 ### 🔧 Requirements
 
-- Python 3.10+
-- Essential packages:
+- Python 3.12+
+- Essential packages
   ```bash
   niquests beautifulsoup4 colorama tqdm rich python-dotenv
   ```
@@ -93,7 +93,8 @@ exit    # Quit program
 
 ## 🌟 Future Roadmap
 
-**Planned improvements**:
+Planned improvements:
+
 - [ ] **🌐 ASN Lookup** - Identify target network ownership
 - [ ] **📁 JSON Reports** - Save scan results for later analysis
 - [ ] **🚦 Ping Sweep** - Pre-scan host availability check
@@ -108,15 +109,15 @@ exit    # Quit program
 Contributions are welcome! Here's how to help improve the project:
 
 - **Fork the repository**
-- **Create a feature branch**:
+- **Create a feature branch**
   ```bash
   git checkout -b feature/your-feature-name
   ```
-- **Commit your changes**:
+- **Commit your changes**
   ```bash
   git commit -m "Add: your feature description"
   ```
-- **Push to your fork**:
+- **Push to your fork**
   ```bash
   git push origin feature/your-feature-name
   ```

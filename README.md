@@ -6,7 +6,7 @@
 ![Stars](https://img.shields.io/github/stars/m-o-z-z-i-x/NR34P3R?v=1&style=for-the-badge)
 
 Fast and powerful port scanner for detecting open ports and services.
-Scans hosts with predefined or custom port ranges, revealing active services and their descriptions.
+Scans hosts with predefined or custom port ranges, revealing active services and their descriptions
 
 > [!CAUTION]
 >

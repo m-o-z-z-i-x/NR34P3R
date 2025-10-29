@@ -2,7 +2,6 @@
 
 # DEPENDENCIES --------------------------------------------------------------- #
 import os
-import shutil
 from subprocess import run
 
 # external
@@ -17,7 +16,7 @@ appName = os.getenv("APP_NAME")
 appVersion = os.getenv("APP_VERSION")
 description = os.getenv("DESCRIPTION")
 command = [
-  ".venv\\scripts\\nuitka.cmd",
+  ".venv\\Scripts\\nuitka.cmd",
 
   # compilation mode options
   "--standalone", # create self-contained distribution
@@ -39,6 +38,7 @@ command = [
 
   # dependency control
 	f"--include-data-file={os.path.abspath('.env')}=.env", # include encrypted file
+	"--include-package=urllib3", # follow all urllib3 imports recursively
 
   # optimization
   "--enable-plugin=upx", # enable upx compression
@@ -52,5 +52,5 @@ command = [
   "main.py"
 ]
 
-run(command)
+run(command, shell = True)
 # ---------------------------------------------------------------------------- #

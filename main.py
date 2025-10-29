@@ -36,6 +36,7 @@ class PortScanner:
 		# initialize core components for port scanning
 		self.descriptions = {} # store service descriptions from wiki
 		self.lock = Lock()     # thread-safe lock for counter protection
+
 		self.defaultPorts = [  # common ports to scan if user selects default option
 			21, 22, 23, 25, 38, 43, 80, 109, 110, 115, 118, 119, 143,
 			194, 220, 443, 540, 585, 591, 1112, 1433, 1443, 3128, 3197,
@@ -82,6 +83,7 @@ class PortScanner:
 			self.showHelp()
 		elif command == "clear":
 			run("cls", shell = True)
+
 			self.showBanner()
 			self.handleCommands()
 		elif command == "":
@@ -103,7 +105,25 @@ class PortScanner:
 				scrape service info from wiki page and save to cache
 			"""
 			try:
-				response = get("https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers?lang=en")
+				# realistic request headers and cookies for wikipedia
+				response = get(
+					"https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers?lang=en",
+
+					headers = {
+						"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+					},
+
+					timeout = 5
+				)
+
+				# check if response is successful
+				if response.status_code != 200:
+					print(f"\n{Fore.RED}[!] Wikipedia returned status code {response.status_code}{Style.RESET_ALL}")
+					print(f"{Fore.YELLOW}[?] Please try again{Style.RESET_ALL}\n")
+
+					self.handleCommands()
+					return
+
 				soup = BeautifulSoup(response.text, "html.parser")
 
 				# find all relevant tables on the page
@@ -140,13 +160,19 @@ class PortScanner:
 				try:
 					makedirs(path.dirname(dataFile), exist_ok = True)
 				except OSError as e:
-					exception(e, "Failed to create directory")
+					exception(e)
 
 				# save the collected data to a file
 				with open(dataFile, "w") as f:
 					dump(self.descriptions, f)
 			except Exception as e:
-				exception(e, "Failed to fetch service info")
+				exception(e)
+
+				print(f"{Fore.RED}[!] Failed to fetch service info from Wikipedia{Style.RESET_ALL}")
+				print(f"{Fore.YELLOW}[?] Please try again{Style.RESET_ALL}\n")
+
+				self.handleCommands()
+				return
 
 		# load cached data if available, otherwise parse fresh
 		if path.exists(dataFile) and path.getsize(dataFile) != 0:
@@ -154,7 +180,9 @@ class PortScanner:
 				with open(dataFile, "r") as f:
 					self.descriptions = load(f)
 			except Exception as e:
-				exception(e, "Failed to load cached service info")
+				exception(e)
+
+				print(f"{Fore.YELLOW}[!] Trying to fetch fresh data from Wikipedia...{Style.RESET_ALL}")
 				parseData()
 		else:
 			parseData()
@@ -213,13 +241,14 @@ class PortScanner:
 			# single port mode - ask user for specific port
 			try:
 				singlePort = int(input(f"\n{Fore.YELLOW}Port to scan: {Style.RESET_ALL}").strip())
+
 				if 1 <= singlePort <= 65535:
 					return [singlePort]
 				else:
-					print(f"{Fore.RED}[!] Invalid port number. Using default ports.{Style.RESET_ALL}")
+					print(f"{Fore.RED}[!] Invalid port number. Using default ports{Style.RESET_ALL}")
 					return self.defaultPorts
 			except ValueError:
-				print(f"{Fore.RED}[!] Invalid port number. Using default ports.{Style.RESET_ALL}")
+				print(f"{Fore.RED}[!] Invalid port number. Using default ports{Style.RESET_ALL}")
 				return self.defaultPorts
 
 		elif portRangeInput == "2":
@@ -234,15 +263,15 @@ class PortScanner:
 				if 1 <= start <= end <= 65535:
 					return range(start, end + 1)
 				else:
-					print(f"{Fore.RED}[!] Invalid port range. Using default ports.{Style.RESET_ALL}")
+					print(f"{Fore.RED}[!] Invalid port range. Using default ports{Style.RESET_ALL}")
 					return self.defaultPorts
 			except ValueError:
-				print(f"{Fore.RED}[!] Invalid port range format. Using default ports.{Style.RESET_ALL}")
+				print(f"{Fore.RED}[!] Invalid port range format. Using default ports{Style.RESET_ALL}")
 				return self.defaultPorts
 
 		else:
 			# handle unexpected input
-			print(f"{Fore.RED}[!] Unrecognized port range option. Using default ports.{Style.RESET_ALL}")
+			print(f"{Fore.RED}[!] Unrecognized port range option. Using default ports{Style.RESET_ALL}")
 			return self.defaultPorts
 
 	def startScan(self):
@@ -259,7 +288,8 @@ class PortScanner:
 		try:
 			host = gethostbyname(hostInput)
 		except gaierror:
-			print(f"{Fore.RED}[!] Hostname or IP could not be resolved. Try again.{Style.RESET_ALL}")
+			print(f"{Fore.RED}[!] Hostname or IP could not be resolved. Try again{Style.RESET_ALL}")
+
 			self.handleCommands()
 			return
 
@@ -319,9 +349,11 @@ class PortScanner:
 		# print scan summary
 		endTime = datetime.now()
 		duration = round((endTime - startTime).total_seconds(), 2)
+
 		print(f"\n{Fore.GREEN}[!] END - {endTime.strftime('%H:%M:%S')} ({duration}s){Style.RESET_ALL}\n")
 
 		input("Press Enter to continue...")
+
 		run("cls", shell = True)
 		self.showBanner()
 		self.handleCommands()

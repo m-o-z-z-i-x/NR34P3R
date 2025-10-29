@@ -24,7 +24,7 @@ Scans hosts with predefined or custom port ranges, revealing active services and
 ## 🚀 Key Features
 
 - **🔀 Multi-threaded scanning** - 100 concurrent threads for blazing fast port checks
-- **📚 Service database** - Automatic fetching of 3000+ port descriptions from WikiLess
+- **📚 Service database** - Automatic fetching of 3000+ port descriptions
 - **🎨 Colorful terminal UI** - Rich output formatting with Colorama and tqdm progress bars
 - **📊 Organized results** - Beautiful Rich tables with port numbers, services and descriptions
 - **🛠️ Flexible scanning** - Supports single ports, custom ranges (80-443) and full 1-65535 scans
@@ -61,7 +61,7 @@ exit    # Quit program
 - Python 3.10+
 - Essential packages:
   ```bash
-  niquests beautifulsoup4 colorama tqdm rich python-dotenv
+  Nuitka requests beautifulsoup4 colorama tqdm rich python-dotenv
   ```
 
 ### ⚡️ Quick Setup Guide

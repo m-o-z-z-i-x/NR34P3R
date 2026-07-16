@@ -24,6 +24,7 @@ command = [
 
   # compiler options
   "--mingw64", # use mingw64 compiler
+	"--assume-yes-for-downloads", # auto-download the required mingw64 gcc (no interactive prompt)
 
   # output configuration
   f"--output-dir=dist", # build directory

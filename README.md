@@ -15,9 +15,9 @@ Scans hosts with predefined or custom port ranges, revealing active services and
 > The author **disclaims all liability** for any misuse, damage, or legal consequences.
 > By using this software, you take full responsibility for your actions and agree to comply with all applicable laws and regulations
 
-<p align="center">
-  <img src="./res/gif/demo.gif" alt="Demo Gif" width="100%">
-</p>
+<a href="https://asciinema.org/a/VE9SfYUbMju8s6O5" target="_blank">
+  <img src="https://asciinema.org/a/VE9SfYUbMju8s6O5.svg">
+</a>
 
 ---
 
